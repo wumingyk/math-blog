@@ -66,7 +66,25 @@ export default function MarkdownRenderer({ content, postTitle }) {
             h3: ({ node, ...props }) => <h3 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
             h4: ({ node, ...props }) => <h4 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
             p: ({ node, ...props }) => <p className="text-slate-700 dark:text-slate-300 leading-relaxed" {...props} />,
-            a: ({ node, ...props }) => <a className="text-emerald-600 dark:text-emerald-400 no-underline hover:underline" {...props} />,
+            a: ({ node, href = '', children, ...props }) => {
+              const isAudio = /\.(mp3|wav|ogg)$/i.test(href || '');
+              if (isAudio) {
+                return (
+                  <div className="my-8 p-4 rounded-xl border bg-gray-50 border-gray-100 dark:bg-slate-800/50 dark:border-slate-700">
+                    <div className="text-sm font-medium mb-3 text-gray-500 dark:text-gray-400">
+                      🎧 {children}
+                    </div>
+                    <audio
+                      controls
+                      preload="metadata"
+                      src={href}
+                      className="w-full h-8"
+                    />
+                  </div>
+                );
+              }
+              return <a className="text-emerald-600 dark:text-emerald-400 no-underline hover:underline" href={href} {...props}>{children}</a>;
+            },
             strong: ({ node, ...props }) => <strong className="text-slate-800 dark:text-slate-200" {...props} />,
             code: ({ node, inline, className, children, ...props }) => {
               if (inline) {
