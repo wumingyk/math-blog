@@ -1,5 +1,6 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import Header from './components/Header';
 import PostListItem from './components/PostListItem';
 import LoadingSkeleton from './components/LoadingSkeleton';
@@ -15,6 +16,28 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  
+  // 深色模式状态管理
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme || 'light';
+  });
+
+  // 深色模式切换函数
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  // 应用主题到 DOM
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     async function init() {
@@ -52,15 +75,20 @@ export default function App() {
     : posts;
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-slate-800 selection:bg-emerald-100">
-      <Header setView={setView} activeView={view} onBack={handleBack} />
+    <HelmetProvider>
+      <Helmet>
+        <title>L.E.A.P. - Exploring the World</title>
+        <meta name="description" content="Decoding the world through Language, Engineering, Algorithms, and Physics." />
+      </Helmet>
+      <div className="min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 selection:bg-emerald-100 dark:selection:bg-emerald-900 transition-colors">
+        <Header setView={setView} activeView={view} onBack={handleBack} theme={theme} toggleTheme={toggleTheme} />
 
       {view === 'home' && (
         <main className="pt-24 pb-20">
           <div className="max-w-4xl mx-auto px-6">
             {/* Hero 区域 */}
             <section className="mb-16">
-              <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-800 leading-tight mb-8">
+              <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-800 dark:text-slate-200 leading-tight mb-8">
                 Exploring the World
               </h1>
               
@@ -74,7 +102,7 @@ export default function App() {
                       className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
                         selectedCategory === category
                           ? 'bg-emerald-600 text-white shadow-md'
-                          : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-emerald-300'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600'
                       }`}
                     >
                       {category}
@@ -90,7 +118,7 @@ export default function App() {
               
               {error && (
                 <div className="p-8 text-center">
-                  <p className="text-red-600 mb-4">Error: {error}</p>
+                  <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
                   <button
                     onClick={() => window.location.reload()}
                     className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
@@ -101,7 +129,7 @@ export default function App() {
               )}
 
               {!loading && !error && posts.length === 0 && (
-                <div className="p-8 text-center text-slate-500">
+                <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                   <p>No posts found.</p>
                 </div>
               )}
@@ -109,17 +137,17 @@ export default function App() {
               {!loading && !error && posts.length > 0 && (
                 <>
                   {filteredPosts.length === 0 ? (
-                    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
                       <p>没有找到分类为 "{selectedCategory}" 的文章</p>
                       <button
                         onClick={() => setSelectedCategory(null)}
-                        className="mt-4 px-4 py-2 text-sm text-emerald-600 hover:text-emerald-700 underline"
+                        className="mt-4 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
                       >
                         查看所有文章
                       </button>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                       {filteredPosts.map((post) => (
                         <PostListItem
                           key={post.slug}
@@ -141,6 +169,7 @@ export default function App() {
       )}
 
       {view === 'about' && <About onBack={handleBack} />}
-    </div>
+      </div>
+    </HelmetProvider>
   );
 }

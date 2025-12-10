@@ -31,3 +31,5 @@ export const isValidCategory = (category) => {
   return fixedCategories.includes(category);
 };
 
+
+
