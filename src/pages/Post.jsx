@@ -2,10 +2,12 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { getCategoryLabel } from '../lib/categoryMapping';
 
 export default function Post({ post, onBack }) {
+  const navigate = useNavigate();
   // 调试：检查 post 数据
   if (!post) {
     return (
@@ -18,17 +20,6 @@ export default function Post({ post, onBack }) {
         </div>
       </article>
     );
-  }
-
-  // 调试信息
-  if (import.meta.env.DEV) {
-    console.log('[Post] 渲染文章:', {
-      title: post.title,
-      slug: post.slug,
-      contentLength: post.content?.length || 0,
-      hasContent: !!post.content,
-      contentPreview: post.content?.substring(0, 100)
-    });
   }
 
   return (

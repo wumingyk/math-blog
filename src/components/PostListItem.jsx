@@ -1,6 +1,7 @@
 // src/components/PostListItem.jsx
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getCategoryLabel } from '../lib/categoryMapping';
 
 export default function PostListItem({ post, onClick }) {
@@ -20,10 +21,14 @@ export default function PostListItem({ post, onClick }) {
   const { day, month, year } = parseDate(post.date);
 
   return (
-    <article
+    <Link
+      to={`/post/${post.slug}`}
+      className="group block"
       onClick={onClick}
-      className="group relative flex items-start gap-6 p-6 border-b border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-all cursor-pointer"
     >
+      <article
+        className="relative flex items-start gap-6 p-6 border-b border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-all cursor-pointer"
+      >
       {/* 左侧：日期 */}
       <div className="flex-shrink-0 w-20 text-right">
         <div className="text-3xl font-serif font-bold text-slate-700 dark:text-slate-300 leading-none">
@@ -64,14 +69,15 @@ export default function PostListItem({ post, onClick }) {
         </div>
       )}
 
-      {/* 悬停时显示的箭头 - 显示在中间区域右侧 */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" style={{ right: post.image ? 'calc(8rem + 1.5rem)' : '1.5rem' }}>
-        <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
-          <span>Read Article</span>
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        {/* 悬停时显示的箭头 - 显示在中间区域右侧 */}
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" style={{ right: post.image ? 'calc(8rem + 1.5rem)' : '1.5rem' }}>
+          <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+            <span>Read Article</span>
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
 
