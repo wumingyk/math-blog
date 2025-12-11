@@ -5,6 +5,7 @@ import remarkMath from 'remark-math'; // 1. 新增引入：解析数学符号 ($
 import rehypeKatex from 'rehype-katex';
 import rehypeHighlight from 'rehype-highlight';
 import Lightbox from 'yet-another-react-lightbox';
+import AudioPlayer from './AudioPlayer';
 import 'yet-another-react-lightbox/styles.css';
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github-dark.css';
@@ -69,19 +70,14 @@ export default function MarkdownRenderer({ content, postTitle }) {
             a: ({ node, href = '', children, ...props }) => {
               const isAudio = /\.(mp3|wav|ogg)$/i.test(href || '');
               if (isAudio) {
-                return (
-                  <div className="my-8 p-4 rounded-xl border bg-gray-50 border-gray-100 dark:bg-slate-800/50 dark:border-slate-700">
-                    <div className="text-sm font-medium mb-3 text-gray-500 dark:text-gray-400">
-                      🎧 {children}
-                    </div>
-                    <audio
-                      controls
-                      preload="metadata"
-                      src={href}
-                      className="w-full h-8"
-                    />
-                  </div>
-                );
+                // 提取标题文本（去除可能的 emoji）
+                const titleText = typeof children === 'string' 
+                  ? children.trim() 
+                  : (Array.isArray(children) 
+                      ? children.map(c => typeof c === 'string' ? c : '').join('').trim()
+                      : '');
+                
+                return <AudioPlayer src={href} title={titleText || undefined} />;
               }
               return <a className="text-emerald-600 dark:text-emerald-400 no-underline hover:underline" href={href} {...props}>{children}</a>;
             },

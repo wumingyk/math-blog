@@ -1,72 +1,122 @@
 // src/pages/Home.jsx
-import React from 'react'
-import { ArrowRight } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import PostListItem from '../components/PostListItem';
+import LoadingSkeleton from '../components/LoadingSkeleton';
+import { loadPosts } from '../lib/loadPosts';
+import { fixedCategories } from '../lib/categoryMapping';
 
-export default function Home({ posts, onPostClick }) {
-  // 1. 【关键修复】这行代码必须放在所有变量声明之前！
-  // 如果 posts 不存在，或者 posts 是空数组，直接显示加载中，不要往下执行
-  if (!posts || posts.length === 0) {
-    return (
-      <main className="pt-20 pb-20 min-h-screen">
-        <section className="container-max">
-          <div className="text-center text-stone-400 mt-20">
-            还没有文章数据...
-          </div>
-        </section>
-      </main>
-    )
-  }
+export default function Home() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // 2. 只有上面的检查通过了，才能安全地定义 featured
-  const featured = posts[0]
-  const others = posts.slice(1)
+  useEffect(() => {
+    async function init() {
+      try {
+        setLoading(true);
+        setError(null);
+        const loaded = await loadPosts.getAll();
+        setPosts(loaded);
+      } catch (err) {
+        console.error('Failed to load posts:', err);
+        setError(err.message || 'Failed to load posts');
+      } finally {
+        setLoading(false);
+      }
+    }
+    init();
+  }, []);
 
-  // 3. 再次确保 featured 真的有内容（双重保险）
-  if (!featured) return null;
+  // 根据选中的分类过滤文章
+  const filteredPosts = selectedCategory
+    ? posts.filter(post => post.category === selectedCategory)
+    : posts;
 
   return (
-    <main className="pt-20 pb-20 min-h-screen">
-      <section className="container-max mb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-7">
-            <div className="card overflow-hidden">
-              <div style={{height: '420px'}} className="relative">
-                {/* 这里现在绝对安全了 */}
-                <img 
-                  src={featured.image} 
-                  alt={featured.title} 
-                  className="w-full h-full object-cover brightness-90" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                <div className="absolute left-6 bottom-6 text-white">
-                  <div className="text-xs uppercase tracking-wider text-stone-300 mb-2">{featured.category} · {featured.date}</div>
-                  <h2 className="text-3xl font-serif leading-tight">{featured.title}</h2>
-                  <p className="mt-2 text-stone-300 max-w-xl">{featured.summary || featured.titleCn}</p>
-                  <button onClick={() => onPostClick(featured)} className="mt-4 btn-accent">Read more</button>
-                </div>
+    <>
+      <Helmet>
+        <title>L.E.A.P. - Exploring the World</title>
+        <meta name="description" content="Decoding the world through Language, Engineering, Algorithms, and Physics." />
+      </Helmet>
+      <main className="pt-24 pb-20">
+        <div className="max-w-4xl mx-auto px-6">
+          {/* Hero 区域 */}
+          <section className="mb-16">
+            <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-800 dark:text-slate-200 leading-tight mb-8">
+              Exploring the World
+            </h1>
+            
+            {/* 分类筛选 */}
+            {!loading && !error && posts.length > 0 && (
+              <div className="flex flex-wrap items-center gap-3 mb-8">
+                {fixedCategories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
+                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
+                      selectedCategory === category
+                        ? 'bg-emerald-600 text-white shadow-md'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
               </div>
-            </div>
-          </div>
+            )}
+          </section>
 
-          <aside className="lg:col-span-5 space-y-6">
-            {others.map(post => (
-              <div key={post.id} className="card p-4 flex items-start space-x-4 cursor-pointer hover:translate-x-1 transition-transform" onClick={() => onPostClick(post)}>
-                <img src={post.image} alt="" className="w-28 h-20 object-cover rounded-md flex-shrink-0" />
-                <div>
-                  <div className="text-xs text-stone-400 mb-1">{post.category} · {post.date}</div>
-                  <h3 className="font-semibold">{post.title}</h3>
-                  <div className="text-sm text-stone-300 mt-1">{post.summary}</div>
-                </div>
-                <div className="ml-auto text-stone-400"><ArrowRight size={18} /></div>
+          {/* 文章列表 */}
+          <section>
+            {loading && <LoadingSkeleton />}
+            
+            {error && (
+              <div className="p-8 text-center">
+                <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                >
+                  Retry
+                </button>
               </div>
-            ))}
-          </aside>
+            )}
+
+            {!loading && !error && posts.length === 0 && (
+              <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                <p>No posts found.</p>
+              </div>
+            )}
+
+            {!loading && !error && posts.length > 0 && (
+              <>
+                {filteredPosts.length === 0 ? (
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p>没有找到分类为 "{selectedCategory}" 的文章</p>
+                    <button
+                      onClick={() => setSelectedCategory(null)}
+                      className="mt-4 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
+                    >
+                      查看所有文章
+                    </button>
+                  </div>
+                ) : (
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    {filteredPosts.map((post) => (
+                      <PostListItem
+                        key={post.slug}
+                        post={post}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </section>
         </div>
-      </section>
-
-      <section className="container-max">
-        <div className="text-stone-400 text-sm">更多文章…</div>
-      </section>
-    </main>
-  )
+      </main>
+    </>
+  );
 }

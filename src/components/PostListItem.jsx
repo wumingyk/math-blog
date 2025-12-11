@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCategoryLabel } from '../lib/categoryMapping';
 
-export default function PostListItem({ post, onClick }) {
+export default function PostListItem({ post }) {
   // 解析日期
   const parseDate = (dateStr) => {
     try {
@@ -24,7 +24,6 @@ export default function PostListItem({ post, onClick }) {
     <Link
       to={`/post/${post.slug}`}
       className="group block"
-      onClick={onClick}
     >
       <article
         className="relative flex items-start gap-6 p-6 border-b border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-all cursor-pointer"

@@ -1,160 +1,13 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { HelmetProvider, Helmet } from 'react-helmet-async';
-import { Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
-import PostListItem from './components/PostListItem';
-import LoadingSkeleton from './components/LoadingSkeleton';
-import PostPage from './pages/Post';
+import Home from './pages/Home';
+import PostRoute from './pages/PostRoute';
 import About from './pages/About';
-import { loadPosts } from './lib/loadPosts';
-import { fixedCategories } from './lib/categoryMapping';
-
-// Post 路由组件：根据 slug 加载文章
-function PostRoute({ posts }) {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const [post, setPost] = useState(() => posts.find(p => p.slug === slug));
-  const [loading, setLoading] = useState(!post);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (post) return;
-    async function fetchPost() {
-      try {
-        setLoading(true);
-        setError(null);
-        const p = await loadPosts.getBySlug(slug);
-        setPost(p);
-      } catch (e) {
-        setError(e.message || 'Post not found');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPost();
-  }, [slug, post]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 flex items-center justify-center">
-        <p className="text-slate-600 dark:text-slate-400">Loading...</p>
-      </div>
-    );
-  }
-
-  if (error || !post) {
-    return (
-      <div className="min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <p className="text-red-600 dark:text-red-400">{error || 'Post not found'}</p>
-          <button
-            onClick={() => navigate('/')}
-            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-          >
-            返回首页
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return <PostPage post={post} onBack={() => navigate(-1)} />;
-}
-
-// 首页组件：列表 + 筛选
-function HomeView({ posts, loading, error, selectedCategory, setSelectedCategory }) {
-  const filteredPosts = selectedCategory
-    ? posts.filter(post => post.category === selectedCategory)
-    : posts;
-
-  return (
-    <main className="pt-24 pb-20">
-      <div className="max-w-4xl mx-auto px-6">
-        {/* Hero 区域 */}
-        <section className="mb-16">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-800 dark:text-slate-200 leading-tight mb-8">
-            Exploring the World
-          </h1>
-          
-          {/* 分类筛选 */}
-          {!loading && !error && posts.length > 0 && (
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              {fixedCategories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
-                    selectedCategory === category
-                      ? 'bg-emerald-600 text-white shadow-md'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* 文章列表 */}
-        <section>
-          {loading && <LoadingSkeleton />}
-          
-          {error && (
-            <div className="p-8 text-center">
-              <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-              >
-                Retry
-              </button>
-            </div>
-          )}
-
-          {!loading && !error && posts.length === 0 && (
-            <div className="p-8 text-center text-slate-500 dark:text-slate-400">
-              <p>No posts found.</p>
-            </div>
-          )}
-
-          {!loading && !error && posts.length > 0 && (
-            <>
-              {filteredPosts.length === 0 ? (
-                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
-                  <p>没有找到分类为 "{selectedCategory}" 的文章</p>
-                  <button
-                    onClick={() => setSelectedCategory(null)}
-                    className="mt-4 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
-                  >
-                    查看所有文章
-                  </button>
-                </div>
-              ) : (
-                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                  {filteredPosts.map((post) => (
-                    <PostListItem
-                      key={post.slug}
-                      post={post}
-                    />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </section>
-      </div>
-    </main>
-  );
-}
 
 export default function App() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  
   // 深色模式状态管理
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -177,47 +30,15 @@ export default function App() {
     }
   }, [theme]);
 
-  useEffect(() => {
-    async function init() {
-      try {
-        setLoading(true);
-        setError(null);
-        const loaded = await loadPosts.getAll();
-        setPosts(loaded);
-      } catch (err) {
-        setError(err.message || 'Failed to load posts');
-      } finally {
-        setLoading(false);
-      }
-    }
-    init();
-  }, []);
-
   return (
     <HelmetProvider>
-      <Helmet>
-        <title>L.E.A.P. - Exploring the World</title>
-        <meta name="description" content="Decoding the world through Language, Engineering, Algorithms, and Physics." />
-      </Helmet>
       <div className="min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 selection:bg-emerald-100 dark:selection:bg-emerald-900 transition-colors">
         <Header theme={theme} toggleTheme={toggleTheme} />
-
         <Routes>
-          <Route
-            path="/"
-            element={
-              <HomeView
-                posts={posts}
-                loading={loading}
-                error={error}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-            }
-          />
-          <Route path="/post/:slug" element={<PostRoute posts={posts} />} />
-          <Route path="/about" element={<About onBack={() => window.history.back()} />} />
-          <Route path="*" element={<HomeView posts={posts} loading={loading} error={error} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/post/:slug" element={<PostRoute />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     </HelmetProvider>
