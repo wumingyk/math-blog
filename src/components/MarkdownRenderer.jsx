@@ -1,11 +1,13 @@
-import React, { useState, useMemo } from 'react';
+// src/components/MarkdownRenderer.jsx
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math'; // 1. 新增引入：解析数学符号 ($)
+import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeHighlight from 'rehype-highlight';
 import Lightbox from 'yet-another-react-lightbox';
 import AudioPlayer from './AudioPlayer';
+import RectRotationDemo from './RectRotationDemo';
 import 'yet-another-react-lightbox/styles.css';
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github-dark.css';
@@ -14,50 +16,60 @@ export default function MarkdownRenderer({ content, postTitle }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [images, setImages] = useState([]);
+  const containerRef = useRef(null);
 
-  // 提取所有图片用于灯箱
-  const imageNodes = useMemo(() => {
-    const imgRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
-    const matches = [];
-    let match;
-    while ((match = imgRegex.exec(content)) !== null) {
-      matches.push({
-        src: match[2],
-        alt: match[1] || '',
-      });
-    }
-    return matches;
+  // 渲染后从 DOM 中收集文章内图片，避免正则与转义问题
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const nodeList = el.querySelectorAll('img');
+    const slides = Array.from(nodeList).map(img => ({
+      src: img.getAttribute('src') || '',
+      alt: img.getAttribute('alt') || '',
+    }));
+    setImages(slides);
   }, [content]);
 
-  const handleImageClick = (src, index) => {
-    setImages(imageNodes.map(img => ({ src: img.src })));
-    setLightboxIndex(index);
+  const handleImageClick = (src) => {
+    const index = images.findIndex(img => img.src === src);
+    setLightboxIndex(index >= 0 ? index : 0);
     setLightboxOpen(true);
+  };
+
+  // 工具：安全提取纯文本
+  const extractText = (children) => {
+    if (typeof children === 'string') return children;
+    if (Array.isArray(children)) {
+      return children
+        .map(c => (typeof c === 'string' ? c : (c?.props?.children ?? '')))
+        .join('');
+    }
+    return '';
   };
 
   return (
     <>
-      <div className="prose prose-lg prose-emerald dark:prose-invert max-w-none font-sans 
+      <div
+        ref={containerRef}
+        className="prose prose-lg prose-emerald dark:prose-invert max-w-none font-sans 
         prose-headings:font-serif 
-        prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed 
-        prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline 
-        prose-strong:text-slate-800 dark:prose-strong:text-slate-200 
-        prose-code:text-emerald-700 dark:prose-code:text-emerald-400 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-900/30 prose-code:px-1 prose-code:rounded 
+        prose-p:text-slate-700 dark:text-slate-300 prose-p:leading-relaxed 
+        prose-a:text-emerald-600 dark:text-emerald-400 prose-a:no-underline hover:prose-a:underline 
+        prose-strong:text-slate-800 dark:text-slate-200 
+        prose-code:text-emerald-700 dark:text-emerald-400 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-900/30 prose-code:px-1 prose-code:rounded 
         prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:text-slate-100 
         prose-img:rounded-lg prose-img:shadow-lg prose-img:cursor-pointer
-        prose-table:text-slate-700 dark:prose-table:text-slate-300
-        prose-th:bg-slate-100 dark:prose-th:bg-slate-800 prose-th:text-slate-800 dark:prose-th:text-slate-200
-        prose-td:border-slate-200 dark:prose-td:border-slate-700">
+        prose-table:text-slate-700 dark:text-slate-300
+        prose-th:bg-slate-100 dark:bg-slate-800 prose-th:text-slate-800 dark:text-slate-200
+        prose-td:border-slate-200 dark:border-slate-700"
+      >
         <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkMath]} // 2. 修改此处：添加 remarkMath
+          remarkPlugins={[remarkGfm, remarkMath]}
           rehypePlugins={[rehypeKatex, rehypeHighlight]}
           components={{
             h1: ({ node, children, ...props }) => {
-              // 如果 h1 的内容与文章标题相同，则隐藏它（避免重复显示标题）
-              const h1Text = Array.isArray(children)
-                ? children.filter(c => typeof c === 'string').join('').trim()
-                : (typeof children === 'string' ? children.trim() : '');
-
+              const h1Text = extractText(children).trim();
               if (h1Text && h1Text === postTitle?.trim()) {
                 return null;
               }
@@ -66,17 +78,18 @@ export default function MarkdownRenderer({ content, postTitle }) {
             h2: ({ node, ...props }) => <h2 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
             h3: ({ node, ...props }) => <h3 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
             h4: ({ node, ...props }) => <h4 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
-            p: ({ node, ...props }) => <p className="text-slate-700 dark:text-slate-300 leading-relaxed" {...props} />,
+            p: ({ node, children, ...props }) => {
+              // 自定义标记：单独一行 :::RectRotationDemo::: → 渲染交互组件
+              const text = extractText(children).trim();
+              if (text === ':::RectRotationDemo:::') {
+                return <RectRotationDemo />;
+              }
+              return <p className="text-slate-700 dark:text-slate-300 leading-relaxed" {...props}>{children}</p>;
+            },
             a: ({ node, href = '', children, ...props }) => {
               const isAudio = /\.(mp3|wav|ogg)$/i.test(href || '');
               if (isAudio) {
-                // 提取标题文本（去除可能的 emoji）
-                const titleText = typeof children === 'string' 
-                  ? children.trim() 
-                  : (Array.isArray(children) 
-                      ? children.map(c => typeof c === 'string' ? c : '').join('').trim()
-                      : '');
-                
+                const titleText = extractText(children).trim();
                 return <AudioPlayer src={href} title={titleText || undefined} />;
               }
               return <a className="text-emerald-600 dark:text-emerald-400 no-underline hover:underline" href={href} {...props}>{children}</a>;
@@ -94,13 +107,12 @@ export default function MarkdownRenderer({ content, postTitle }) {
             },
             pre: ({ node, ...props }) => <pre className="bg-slate-900 dark:bg-slate-950 text-slate-100" {...props} />,
             img: ({ node, src, alt, ...props }) => {
-              const imageIndex = imageNodes.findIndex(img => img.src === src);
               return (
                 <img
                   src={src}
                   alt={alt}
                   className="rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => handleImageClick(src, imageIndex >= 0 ? imageIndex : 0)}
+                  onClick={() => handleImageClick(src)}
                   {...props}
                 />
               );
