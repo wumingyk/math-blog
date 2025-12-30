@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import PostRoute from './pages/PostRoute';
 import About from './pages/About';
+import Subscribe from './pages/Subscribe';
 
 export default function App() {
   // 深色模式状态管理
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/post/:slug" element={<PostRoute />} />
           <Route path="/about" element={<About />} />
+          <Route path="/subscribe" element={<Subscribe />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </div>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[L.E.A.P. - Exploring the World]]></title><description><![CDATA[Decoding the world through Language, Engineering, Algorithms, and Physics.]]></description><link>https://yourdomain.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 30 Dec 2025 08:49:46 GMT</lastBuildDate><atom:link href="https://yourdomain.com/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Tue, 30 Dec 2025 08:49:46 GMT</pubDate><copyright><![CDATA[Copyright 2025]]></copyright><language><![CDATA[zh-CN]]></language><ttl>60</ttl><item><title><![CDATA[乘法交换律：顺序不同，结果相同]]></title><description><![CDATA[ 乘法交换律：顺序不同，结果相同
+
+在小学数学中，我们就学过一个重要的规律：乘法交换律。  
+它告诉我们：  
+
+$$
+[
+a \times b = b \times a
+]
+$$
+
+
+这意味着两个数相乘时，顺序不同，结果保持不变。
+
+---
+
+ 直观演示
+
+为了让这一点更直观，我们设计了一个交互式演示：通过长方形的旋转来说明交换律的本质。
+
+:::RectRotationDemo:...]]></description><link>https://yourdomain.com/post/commutative-law</link><guid isPermaLink="true">https://yourdomain.com/post/commutative-law</guid><category><![CDATA[Math]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Fri, 12 Dec 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[数字的前世今生]]></title><description><![CDATA[——一场从刻痕到计算的演化旅行
+
+---
+
+> “人类最早的计算工具不是算盘，而是骨头上的刻痕。”
+> — 摘自《文明的纹理》
+
+---
+
+ 🅐 导论：数字不是为数学而生
+
+数字的出现并非源于抽象思考，而是源于生存。
+
+在数万年前，智人还未诞生语言系统时，已经开始使用 刻痕 去记录：
+
+ 今天打猎捕获的猎物
+ 储藏的食物数量
+ 月亮的周期
+ 部落成员的分工...]]></description><link>https://yourdomain.com/post/number1</link><guid isPermaLink="true">https://yourdomain.com/post/number1</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Fri, 12 Dec 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[生活是一场二阶工程：别试图直接制造“快乐”]]></title><description><![CDATA[[点击收听](/audio/life.mp3)
+
+作为工程师或设计师，我们最痛苦的时刻往往是意识到“意图”与“结果”之间的非线性关系。
+
+Tynan Sylvester 的“二阶工程学”理论——你只能构建机制，无法直接构建体验——虽然是写给游戏开发者的，但它实际上是一份极为精准的生活系统架构指南。
+
+在现实生活的服务器上，我们每个人既是设计师，也是那个唯一的玩家。当我们把这套理论从...]]></description><link>https://yourdomain.com/post/Tynan</link><guid isPermaLink="true">https://yourdomain.com/post/Tynan</guid><category><![CDATA[Engineering]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Wed, 10 Dec 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[欧拉公式：宇宙最美的诗篇]]></title><description><![CDATA[物理学家理查德·费曼（Richard Feynman）曾将它称为“数学中最卓越的公式”。
+它就是欧拉恒等式（Euler's Identity）：
+
+$$e^{i\pi} + 1 = 0$$
+
+它的美，不在于繁复的计算，而在于它用最简洁的符号，统一了数学中五个最基础、最重要，却看似毫无关联的常数。
+
+ 五大常数的盛宴
+
+如果把数学比作一个庞大的帝国，那么这五个常数分别统治着不同的领土：
+
+1. ...]]></description><link>https://yourdomain.com/post/euler-identity</link><guid isPermaLink="true">https://yourdomain.com/post/euler-identity</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Tue, 28 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[1：抽象的起点与万物的度量]]></title><description><![CDATA[我们习以为常地使用数字，却很少思考一个根本性的问题：“1” 究竟是什么？
+
+在数学的浩瀚宇宙中，一切都始于这个最简单的定义。它不仅仅是一个计数符号，它是人类认知史上最伟大的一次“降维打击”。
+
+ 发现源于“被注意到”
+
+在远古时代，并没有数字的概念。
+先民们看到太阳升起，看到一只野兔跑过，看到一块石头。
+
+“1” 的诞生，始于关注（Attention）。
+当意识从混沌的背景中，...]]></description><link>https://yourdomain.com/post/img</link><guid isPermaLink="true">https://yourdomain.com/post/img</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Mon, 27 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[熵：为什么覆水难收？]]></title><description><![CDATA[如果你的耳机线放在口袋里，拿出来时总是缠绕在一起的；
+如果你不整理房间，房间只会越来越乱，而不会自动变整洁。
+
+这背后不是墨菲定律，而是物理学中最令人绝望也最迷人的定律：熵增定律 (The Second Law of Thermodynamics)。
+
+ 什么是熵 (Entropy)？
+
+熵是衡量系统“无序程度”的物理量。热力学第二定律告诉我们：在一个孤立系统中，熵永远不会减少，只...]]></description><link>https://yourdomain.com/post/entropy-and-time</link><guid isPermaLink="true">https://yourdomain.com/post/entropy-and-time</guid><category><![CDATA[Physics]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[Understanding：为什么“理解”是站在下方？]]></title><description><![CDATA[我们在学习英语时，常把 Understand 简单等同于中文的“理解”。但在人文与技术的交叉点上，如果深挖其词源（Etymology），会发现一种更有趣的认知视角。
+
+ Stand Under
+
+Understand 由 under + stand 组成。字面意思是“站在...下面”。
+
+这听起来很反直觉。通常我们认为“理解”了一个概念，是驾驭了它（Mastery），是站在了它...]]></description><link>https://yourdomain.com/post/markdown</link><guid isPermaLink="true">https://yourdomain.com/post/markdown</guid><category><![CDATA[Language]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[素数：数字世界中的原子]]></title><description><![CDATA[在小学的数学课上，我们学过素数（Prime Numbers）的定义：只能被 1 和它自身整除的自然数。
+比如：$2, 3, 5, 7, 11, 13...$
+
+但这只是表象。在算法和数论的视角下，素数有着更深刻的物理意义。
+
+ 算术基本定理
+
+数学中有一个极其优美的定理叫做算术基本定理 (Fundamental Theorem of Arithmetic)。它指出：
+
+> 任何大于 1...]]></description><link>https://yourdomain.com/post/why-prime-numbers-matter</link><guid isPermaLink="true">https://yourdomain.com/post/why-prime-numbers-matter</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[complexity-conservation]]></title><description><![CDATA[---
+
+title: "如何构建一个轻量级个人博客系统"
+date: "2025-01-02"
+tags: ["blog", "javascript", "react", "markdown"]
+summary: "用最小依赖构建可本地编辑 Markdown 的极简博客系统。"
+-----------------------------------------
+
+ 如何构建一个轻量级个人博客系...]]></description><link>https://yourdomain.com/post/complexity-conservation</link><guid isPermaLink="true">https://yourdomain.com/post/complexity-conservation</guid><category><![CDATA[Uncategorized]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Tue, 30 Dec 2025 08:49:46 GMT</pubDate></item></channel></rss>

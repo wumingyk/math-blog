@@ -38,3 +38,17 @@ $$
 - 交换 \(a\) 和 \(b\) 的角色（横纵方向互换），单位格总数保持不变。  
 - 这就是乘法交换律的直观意义：顺序不同，结果相同。
 
+:::DotNumberDemo:::
+
+:::DotGroupingDemo:::
+
+:::Base10PlaceValueDemo:::
+
+:::CountingProcessDemo:::
+
+
+:::DecimalGroupingDemo:::
+
+:::NumberChristmasTreeDemo:::
+
+

@@ -1,12 +1,13 @@
 // src/components/Header.jsx
 import React from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Rss } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Header({ theme, toggleTheme }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const activeView = location.pathname.startsWith('/about') ? 'about' : 'home';
+  const activeView = location.pathname.startsWith('/about') ? 'about' :
+                    location.pathname.startsWith('/subscribe') ? 'subscribe' : 'home';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50">
@@ -47,7 +48,7 @@ export default function Header({ theme, toggleTheme }) {
             {/* 主题切换按钮 */}
             <button
               onClick={toggleTheme}
-              className="ml-2 p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
@@ -55,6 +56,15 @@ export default function Header({ theme, toggleTheme }) {
               ) : (
                 <Moon size={18} />
               )}
+            </button>
+            {/* RSS 订阅按钮 */}
+            <button
+              onClick={() => navigate('/subscribe')}
+              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="RSS Feed"
+              title="订阅 RSS"
+            >
+              <Rss size={18} className="text-emerald-600 dark:text-emerald-400" />
             </button>
           </nav>
         </div>

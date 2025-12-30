@@ -1,10 +1,10 @@
 ---
-
 title: "如何构建一个轻量级个人博客系统"
 date: "2025-01-02"
 tags: ["blog", "javascript", "react", "markdown"]
 summary: "用最小依赖构建可本地编辑 Markdown 的极简博客系统。"
------------------------------------------
+category: "Tech"
+---
 
 # 如何构建一个轻量级个人博客系统
 

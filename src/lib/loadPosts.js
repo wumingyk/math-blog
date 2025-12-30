@@ -1,26 +1,28 @@
 // src/lib/loadPosts.js
+import frontMatter from 'front-matter';
+
 // 使用 Vite 的 import.meta.glob 批量导入文件
-// { as: 'raw', eager: true } 表示以字符串形式直接加载，不需要异步 await import()
-const markdownFiles = import.meta.glob('../posts/*.md', { as: 'raw', eager: true });
+// { query: '?raw', import: 'default' } 表示以字符串形式直接加载
+const markdownFiles = import.meta.glob('../posts/*.md', { query: '?raw', import: 'default', eager: true });
 
 let _postCache = null;
 
 /**
- * 解析 Frontmatter
+ * 解析 Frontmatter（使用 front-matter 库）
  * @param {string} fileName - 文件名
  * @param {string} rawContent - 原始内容
  * @returns {Object|null} 解析后的文章对象
  */
 function parseFrontmatter(fileName, rawContent) {
   try {
-    // 使用正则表达式匹配 frontmatter 分隔符（支持 --- 或 -{3,}）
-    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n-{3,}\s*\n([\s\S]*)$/;
-    const match = rawContent.match(frontmatterRegex);
-    
-    // 如果没有标准的 frontmatter，返回默认结构
-    if (!match) {
-      // 尝试从文件名生成 slug
-      const slug = fileName.replace('.md', '');
+    // 使用 front-matter 库解析
+    const parsed = frontMatter(rawContent);
+
+    // 生成 Slug (移除 .md 后缀)
+    const slug = fileName.replace('.md', '');
+
+    // 如果没有 frontmatter，返回默认结构
+    if (!parsed.attributes || Object.keys(parsed.attributes).length === 0) {
       return {
         slug,
         title: slug,
@@ -30,34 +32,10 @@ function parseFrontmatter(fileName, rawContent) {
       };
     }
 
-    const yamlBlock = match[1];
-    const content = match[2].trim();
-    
-    // 简单的 YAML 解析器 (手动实现，为了不依赖第三方库)
-    const metadata = {};
-    yamlBlock.split('\n').forEach(line => {
-      const match = line.match(/^(\w+):\s*(.+)$/);
-      if (match) {
-        let value = match[2].trim();
-        // 去除引号
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1);
-        }
-        // 处理布尔值
-        if (value === 'true') value = true;
-        if (value === 'false') value = false;
-        
-        metadata[match[1]] = value;
-      }
-    });
-
-    // 生成 Slug (移除 .md 后缀)
-    const slug = fileName.replace('.md', '');
-
     return {
       slug,
-      ...metadata,
-      content
+      ...parsed.attributes,
+      content: parsed.body
     };
   } catch (e) {
     console.error(`Error parsing ${fileName}:`, e);
