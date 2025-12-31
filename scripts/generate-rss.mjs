@@ -33,8 +33,11 @@ function loadPosts() {
     };
   });
 
+  // 过滤掉草稿（published: false）
+  const publishedPosts = posts.filter(post => post.published !== false);
+
   // 按日期排序
-  return posts.sort((a, b) => {
+  return publishedPosts.sort((a, b) => {
     const dateA = new Date(a.date || '1970-01-01');
     const dateB = new Date(b.date || '1970-01-01');
     return dateB - dateA;

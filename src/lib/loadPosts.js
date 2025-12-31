@@ -49,19 +49,26 @@ function parseFrontmatter(fileName, rawContent) {
 export const loadPosts = {
   /**
    * 获取所有文章列表（按日期降序排序）
+   * @param {Object} options - 选项
+   * @param {boolean} options.publishedOnly - 是否只返回已发布的文章（默认 true）
    * @returns {Promise<Array>} 文章数组
    */
-  getAll: async () => {
+  getAll: async ({ publishedOnly = true } = {}) => {
     // 简单的内存缓存，避免重复解析
     if (_postCache) {
-      return _postCache;
+      const posts = _postCache;
+      // 如果只需要已发布的文章，过滤掉草稿
+      if (publishedOnly) {
+        return posts.filter(post => post.published !== false);
+      }
+      return posts;
     }
 
     // 遍历 glob 导入的结果
     const posts = Object.keys(markdownFiles).map((path) => {
       const fileName = path.split('/').pop(); // 从路径 ../posts/abc.md 获取 abc.md
       const rawContent = markdownFiles[path];
-      
+
       // 调用解析器
       return parseFrontmatter(fileName, rawContent);
     }).filter(post => post !== null); // 过滤掉解析失败的
@@ -74,7 +81,21 @@ export const loadPosts = {
     });
 
     _postCache = posts;
+
+    // 如果只需要已发布的文章，过滤掉草稿
+    if (publishedOnly) {
+      return posts.filter(post => post.published !== false);
+    }
+
     return posts;
+  },
+
+  /**
+   * 获取所有文章（包括草稿）
+   * @returns {Promise<Array>} 所有文章数组
+   */
+  getAllIncludingDrafts: async () => {
+    return loadPosts.getAll({ publishedOnly: false });
   },
 
   /**
@@ -83,7 +104,7 @@ export const loadPosts = {
    * @returns {Promise<Object>} 文章对象
    */
   getBySlug: async (slug) => {
-    const posts = await loadPosts.getAll();
+    const posts = await loadPosts.getAll({ publishedOnly: false });
     const post = posts.find(p => p.slug === slug);
     if (!post) {
       throw new Error(`Post not found: ${slug}`);

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[L.E.A.P. - Exploring the World]]></title><description><![CDATA[Decoding the world through Language, Engineering, Algorithms, and Physics.]]></description><link>https://yourdomain.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 30 Dec 2025 08:49:46 GMT</lastBuildDate><atom:link href="https://yourdomain.com/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Tue, 30 Dec 2025 08:49:46 GMT</pubDate><copyright><![CDATA[Copyright 2025]]></copyright><language><![CDATA[zh-CN]]></language><ttl>60</ttl><item><title><![CDATA[乘法交换律：顺序不同，结果相同]]></title><description><![CDATA[ 乘法交换律：顺序不同，结果相同
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[L.E.A.P. - Exploring the World]]></title><description><![CDATA[Decoding the world through Language, Engineering, Algorithms, and Physics.]]></description><link>https://yourdomain.com</link><generator>RSS for Node</generator><lastBuildDate>Tue, 30 Dec 2025 09:25:47 GMT</lastBuildDate><atom:link href="https://yourdomain.com/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Tue, 30 Dec 2025 09:25:47 GMT</pubDate><copyright><![CDATA[Copyright 2025]]></copyright><language><![CDATA[zh-CN]]></language><ttl>60</ttl><item><title><![CDATA[乘法交换律：顺序不同，结果相同]]></title><description><![CDATA[ 乘法交换律：顺序不同，结果相同
 
 在小学数学中，我们就学过一个重要的规律：乘法交换律。  
 它告诉我们：  
@@ -85,12 +85,18 @@ Understand 由 under + stand 组成。字面意思是“站在...下面”。
 
 数学中有一个极其优美的定理叫做算术基本定理 (Fundamental Theorem of Arithmetic)。它指出：
 
-> 任何大于 1...]]></description><link>https://yourdomain.com/post/why-prime-numbers-matter</link><guid isPermaLink="true">https://yourdomain.com/post/why-prime-numbers-matter</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[complexity-conservation]]></title><description><![CDATA[---
+> 任何大于 1...]]></description><link>https://yourdomain.com/post/why-prime-numbers-matter</link><guid isPermaLink="true">https://yourdomain.com/post/why-prime-numbers-matter</guid><category><![CDATA[Algorithm]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title><![CDATA[如何构建一个轻量级个人博客系统]]></title><description><![CDATA[ 如何构建一个轻量级个人博客系统
 
-title: "如何构建一个轻量级个人博客系统"
-date: "2025-01-02"
-tags: ["blog", "javascript", "react", "markdown"]
-summary: "用最小依赖构建可本地编辑 Markdown 的极简博客系统。"
------------------------------------------
+很多人想写博客，却不想折腾复杂的框架。本篇记录我如何从零实现一个可本地编辑 Markdown、自动扫描文章并渲染的极简博客系统。
 
- 如何构建一个轻量级个人博客系...]]></description><link>https://yourdomain.com/post/complexity-conservation</link><guid isPermaLink="true">https://yourdomain.com/post/complexity-conservation</guid><category><![CDATA[Uncategorized]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Tue, 30 Dec 2025 08:49:46 GMT</pubDate></item></channel></rss>
+ 目标
+
+ 文章以 Markdown 存储
+ 本地编辑 → 自动更新
+ 无需后端
+ 轻量、易部署
+
+ 关键思路
+
+1. 在 /posts 文件夹放置 .md 文件
+2. 使用...]]></description><link>https://yourdomain.com/post/complexity-conservation</link><guid isPermaLink="true">https://yourdomain.com/post/complexity-conservation</guid><category><![CDATA[Tech]]></category><dc:creator><![CDATA[L.E.A.P.]]></dc:creator><pubDate>Thu, 02 Jan 2025 00:00:00 GMT</pubDate></item></channel></rss>

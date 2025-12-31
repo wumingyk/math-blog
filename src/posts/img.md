@@ -4,6 +4,7 @@ date: 2025-01-27
 category: "Algorithm"
 tags: ["math", "philosophy", "abstraction", "number-theory"]
 description: "数字不是被发明的，而是被发现的。当我们学会忽略事物的细节，将其抽象为一个点时，数学诞生了。"
+published: false 
 ---
 
 我们习以为常地使用数字，却很少思考一个根本性的问题：**“1” 究竟是什么？**
