@@ -4,6 +4,7 @@ date: 2025-01-26
 category: "Language"
 tags: ["etymology", "english", "thinking"]
 description: "通过词源学，我们重新审视“理解”的定义。它不是居高临下的征服，而是自下而上的支撑。"
+published: false 
 ---
 
 我们在学习英语时，常把 *Understand* 简单等同于中文的“理解”。但在人文与技术的交叉点上，如果深挖其词源（Etymology），会发现一种更有趣的认知视角。

@@ -4,6 +4,7 @@ date: 2025-12-12
 category: "Math"
 tags: ["algebra", "commutative-law", "interactive"]
 description: "通过直观的几何演示理解乘法交换律：a × b = b × a。"
+published: false 
 ---
 
 # 乘法交换律：顺序不同，结果相同

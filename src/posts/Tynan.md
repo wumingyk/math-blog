@@ -4,6 +4,7 @@ date: 2025-12-10
 category: "Engineering"
 tags: ["System Thinking", "Mental Models", "Tynan Sylvester", "Psychology"]
 description: "如果我们像设计游戏一样设计生活，就会发现：快乐不是被追求到的，它只是良好系统运行时的副产物。"
+published: false 
 ---
 [点击收听](/audio/life.mp3)
 

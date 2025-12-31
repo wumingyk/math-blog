@@ -4,6 +4,7 @@ date: 2025-01-26
 category: "Physics"
 tags: ["thermodynamics", "time", "science"]
 description: "从物理学角度看，混乱才是宇宙的常态，有序只是短暂的奇迹。"
+published: false 
 ---
 
 如果你的耳机线放在口袋里，拿出来时总是缠绕在一起的；

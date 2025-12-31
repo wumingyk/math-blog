@@ -4,6 +4,7 @@ date: 2025-01-28
 category: "Algorithm"
 tags: ["math", "complex-analysis", "beauty"]
 description: "五个看似毫无关联的常数，在这一刻奇迹般地握手言和。这是数学界的“上帝方程”。"
+published: false 
 ---
 
 物理学家理查德·费曼（Richard Feynman）曾将它称为“数学中最卓越的公式”。

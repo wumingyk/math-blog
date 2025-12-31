@@ -4,6 +4,7 @@ date: 2025-01-26
 category: "Algorithm"
 tags: ["math", "number-theory", "logic"]
 description: "如果整数是化学分子，那么素数就是元素周期表中的原子。"
+published: false 
 ---
 
 在小学的数学课上，我们学过素数（Prime Numbers）的定义：只能被 1 和它自身整除的自然数。
