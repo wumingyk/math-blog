@@ -1,6 +1,6 @@
 // src/components/Header.jsx
 import React from 'react';
-import { Sun, Moon, Rss } from 'lucide-react';
+import { Sun, Moon, Rss, Newspaper } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Header({ theme, toggleTheme }) {
@@ -35,6 +35,16 @@ export default function Header({ theme, toggleTheme }) {
             >
               Home
             </button>
+            {/* <button
+              onClick={() => navigate('/feed')}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                activeView === 'feed'
+                  ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800'
+              }`}
+            >
+              Feed
+            </button> */} {/* 暂时隐藏 RSS 资讯页面 */}
             <button
               onClick={() => navigate('/about')}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${

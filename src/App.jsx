@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import PostRoute from './pages/PostRoute';
 import About from './pages/About';
 import Subscribe from './pages/Subscribe';
+// import Feed from './pages/Feed'; // 暂时隐藏 RSS 资讯页面
 
 export default function App() {
   // 深色模式状态管理
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/post/:slug" element={<PostRoute />} />
           <Route path="/about" element={<About />} />
           <Route path="/subscribe" element={<Subscribe />} />
+          {/* <Route path="/feed" element={<Feed />} /> */} {/* 暂时隐藏 RSS 资讯页面 */}
           <Route path="*" element={<Home />} />
         </Routes>
       </div>

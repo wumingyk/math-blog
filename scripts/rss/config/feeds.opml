@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>High Signal English Tech RSS</title>
+    <ownerName>k</ownerName>
+  </head>
+  <body>
+    <outline text="General Tech News" title="General Tech News">
+      <outline
+        text="Ars Technica"
+        title="Ars Technica"
+        type="rss"
+        xmlUrl="https://feeds.arstechnica.com/arstechnica/index"
+        htmlUrl="https://arstechnica.com/" />
+      <outline
+        text="Wired"
+        title="Wired"
+        type="rss"
+        xmlUrl="https://www.wired.com/feed/rss"
+        htmlUrl="https://www.wired.com/" />
+      <outline
+        text="The Verge"
+        title="The Verge"
+        type="rss"
+        xmlUrl="https://www.theverge.com/rss/index.xml"
+        htmlUrl="https://www.theverge.com/" />
+    </outline>
+
+    <outline text="Startup & Business" title="Startup & Business">
+      <outline
+        text="TechCrunch"
+        title="TechCrunch"
+        type="rss"
+        xmlUrl="https://techcrunch.com/feed/"
+        htmlUrl="https://techcrunch.com/" />
+      <outline
+        text="Bloomberg Technology"
+        title="Bloomberg Technology"
+        type="rss"
+        xmlUrl="https://www.bloomberg.com/feeds/technology.xml"
+        htmlUrl="https://www.bloomberg.com/technology" />
+    </outline>
+
+    <outline text="Developer & Engineering" title="Developer & Engineering">
+      <outline
+        text="Hacker News"
+        title="Hacker News"
+        type="rss"
+        xmlUrl="https://news.ycombinator.com/rss"
+        htmlUrl="https://news.ycombinator.com/" />
+      <outline
+        text="InfoQ"
+        title="InfoQ"
+        type="rss"
+        xmlUrl="https://www.infoq.com/feed/"
+        htmlUrl="https://www.infoq.com/" />
+      <outline
+        text="GitHub Blog"
+        title="GitHub Blog"
+        type="rss"
+        xmlUrl="https://github.blog/feed/"
+        htmlUrl="https://github.blog/" />
+      <outline
+        text="Stack Overflow Blog"
+        title="Stack Overflow Blog"
+        type="rss"
+        xmlUrl="https://stackoverflow.blog/feed/"
+        htmlUrl="https://stackoverflow.blog/" />
+    </outline>
+
+    <outline text="AI & Future Tech" title="AI & Future Tech">
+      <outline
+        text="MIT Technology Review"
+        title="MIT Technology Review"
+        type="rss"
+        xmlUrl="https://www.technologyreview.com/feed/"
+        htmlUrl="https://www.technologyreview.com/" />
+      <outline
+        text="LessWrong"
+        title="LessWrong"
+        type="rss"
+        xmlUrl="https://www.lesswrong.com/feed.xml"
+        htmlUrl="https://www.lesswrong.com/" />
+      <outline
+        text="Alignment Forum"
+        title="Alignment Forum"
+        type="rss"
+        xmlUrl="https://www.alignmentforum.org/feed.xml"
+        htmlUrl="https://www.alignmentforum.org/" />
+    </outline>
+
+    <outline text="Security" title="Security">
+      <outline
+        text="Krebs on Security"
+        title="Krebs on Security"
+        type="rss"
+        xmlUrl="https://krebsonsecurity.com/feed/"
+        htmlUrl="https://krebsonsecurity.com/" />
+      <outline
+        text="The Hacker News"
+        title="The Hacker News"
+        type="rss"
+        xmlUrl="https://thehackernews.com/feeds/posts/default"
+        htmlUrl="https://thehackernews.com/" />
+    </outline>
+  </body>
+</opml>
