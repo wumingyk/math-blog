@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import MarkdownRenderer from '../components/MarkdownRenderer';
+import AudioPlayer from '../components/AudioPlayer';
 import { getCategoryLabel } from '../lib/categoryMapping';
 
 export default function Post({ post, onBack }) {
@@ -75,6 +76,14 @@ export default function Post({ post, onBack }) {
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-800 dark:text-slate-200 mb-8 leading-tight">
             {post.title}
           </h1>
+
+          {/* 音频播放器 */}
+          {post.audio && (
+            <AudioPlayer 
+              src={post.audio} 
+              title="🎧 收听本文（AI 朗读）" 
+            />
+          )}
 
           {/* 摘要 */}
           {post.summary && (

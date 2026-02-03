@@ -5,6 +5,7 @@ category: "Math"
 tags: ["math", "pi", "geometry", "history"]
 description: "一个永远除不尽的常数，却精确地定义了圆的本质。它既是数学的基石，也是连接几何与分析的桥梁。"
 published: true
+audio: "/audio/pi-the-universal-constant.mp3"
 ---
 
 圆，是人类最早认识的几何图形之一。
