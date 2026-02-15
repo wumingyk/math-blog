@@ -12,6 +12,11 @@
 - **深色模式**：全站支持主题切换
 - **响应式设计**：完美适配各种设备
 
+### 📚 Reading 项目集成
+- **读书笔记快速导入**：从 Reading 项目一键转换笔记为博客文章
+- **标准化模板**：统一的 frontmatter 格式，支持阅读进度追踪
+- **自动分类**：支持 Math/Physics/Algorithm/Engineering/Reading/Essay 分类
+
 ## 🚀 快速开始
 
 ### 安装依赖
@@ -93,6 +98,41 @@ published: true
 - 代码高亮
 - 图片嵌入
 - 自定义样式
+
+## 📚 从 Reading 项目导入
+
+本项目与 [Reading 项目](~/Documents/Reading) 深度集成。
+
+### 快速转换
+
+```bash
+# 转换读书笔记为博客文章
+~/.openclaw/workspace/reading-to-blog.sh [笔记路径] [章节标题]
+
+# 示例
+~/.openclaw/workspace/reading-to-blog.sh \
+  ~/Documents/Reading/notes/数学/数学的语言：化无形为可见.md \
+  "第1章：数字为何靠得住"
+```
+
+### 模板标准
+
+详见 [TEMPLATE.md](./TEMPLATE.md)
+
+**关键字段**：
+- `category`: Reading/Math/Physics/Algorithm/Engineering/Essay
+- `source`: 书籍信息（book/author/chapter/progress）
+- `published`: true/false
+
+### 阅读笔记位置
+
+```
+src/posts/
+├── reading/           # 读书笔记
+│   └── math-language-ch1.md
+├── digest/            # 阅读摘要
+└── {other}/           # 其他文章
+```
 
 ## 🌐 部署
 
