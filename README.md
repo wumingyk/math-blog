@@ -2,16 +2,9 @@
 
 > **L**anguage, **E**ngineering, **A**lgorithms, **P**hysics
 
-一个基于 React + Vite 构建的个人博客网站，专注于技术、数学和物理等领域的知识分享，集成了 **AI 驱动的英文科技资讯聚合系统**。
+一个基于 React + Vite 构建的个人博客网站，专注于技术、数学和物理等领域的知识分享。
 
 ## ✨ 特色功能
-
-### 🤖 AI 驱动的科技资讯聚合
-- **14 个高质量科技 RSS 源**：TechCrunch, Hacker News, MIT Technology Review, Wired, The Verge 等
-- **AI 智能翻译**：使用智谱 GLM-4 自动翻译成中文
-- **智能筛选**：自动过滤非技术相关和 AI 生成的文章
-- **卡片式展示**：时间线布局，支持按来源筛选
-- **手动更新**：运行脚本即可更新资讯
 
 ### 🎨 博客系统
 - **Markdown 文章**：支持数学公式、代码高亮
@@ -38,53 +31,6 @@ npm run dev
 npm run build
 ```
 
-## 📡 RSS 资讯聚合系统
-
-### 功能说明
-
-自动从 14 个顶级科技媒体抓取最新资讯，使用 AI 翻译并筛选，只保留高质量的技术相关文章。
-
-**数据源**：
-- **General Tech**: Ars Technica, Wired, The Verge
-- **Startup & Business**: TechCrunch, Bloomberg Technology
-- **Developer & Engineering**: Hacker News, InfoQ, GitHub Blog, Stack Overflow Blog
-- **AI & Future Tech**: MIT Technology Review, LessWrong, Alignment Forum
-- **Security**: Krebs on Security, The Hacker News
-
-**AI 能力**：
-- ✅ 全文翻译（英文 → 中文）
-- ✅ 智能摘要生成
-- ✅ 中英文关键词提取
-- ✅ 技术相关性判断
-- ✅ AI 生成内容检测
-
-### 更新资讯
-
-```bash
-# 使用智谱 AI 翻译并筛选
-node scripts/rss/run.mjs
-```
-
-**输出**：
-- 文件：`src/data/rss-feed.json`
-- 文章数：约 40-45 篇（从 50 篇筛选）
-- 翻译时间：约 3-4 分钟
-
-### 配置 AI
-
-编辑 `.env` 文件：
-
-```env
-ZHIPU_API_KEY=你的智谱API密钥
-```
-
-智谱 AI 申请：https://open.bigmodel.cn/
-
-**成本**：
-- 模型：GLM-4-Flash（快速版）
-- 每次更新：约 ¥0.75
-- 每月成本：约 ¥20-30（每天更新）
-
 ## 📁 项目结构
 
 ```
@@ -93,21 +39,13 @@ my-blog/
 │   ├── pages/              # 页面组件
 │   │   ├── Home.jsx        # 首页（文章列表）
 │   │   ├── Post.jsx        # 文章详情
-│   │   ├── About.jsx       # 关于页面
-│   │   └── Feed.jsx        # RSS 资讯页面
+│   │   └── About.jsx       # 关于页面
 │   ├── components/         # 可复用组件
 │   ├── lib/                # 工具函数
-│   ├── posts/              # 博客文章（Markdown）
-│   └── data/               # RSS 数据文件
+│   └── posts/              # 博客文章（Markdown）
 │
 ├── scripts/
-│   └── rss/                # RSS 聚合脚本
-│       ├── config/          # 配置文件
-│       ├── fetchers/       # RSS 抓取器
-│       ├── ai/             # AI 翻译器
-│       ├── generators/     # 数据生成器
-│       ├── utils/          # 工具函数
-│       └── index.mjs       # 主脚本
+│   └── generate-sitemap.mjs # 站点地图生成
 │
 ├── public/                 # 静态资源
 ├── package.json
@@ -131,11 +69,6 @@ my-blog/
 - remark-math（数学公式）
 - rehype-katex（KaTeX 渲染）
 - rehype-highlight（代码高亮）
-
-### RSS 聚合
-- rss-parser（RSS 解析）
-- OpenAI SDK（AI 调用）
-- dotenv（环境变量）
 
 ## 📝 文章格式
 
@@ -181,12 +114,6 @@ npm run build
 - 按分类筛选
 - 按时间倒序排列
 
-### Feed (`/feed`)
-- RSS 资讯聚合页面
-- 卡片式时间线布局
-- 支持按来源筛选
-- 显示翻译后的中文标题、摘要、关键词
-
 ### 文章详情 (`/post/:slug`)
 - Markdown 渲染
 - 数学公式显示
@@ -206,26 +133,15 @@ npm run build
 3. 编写 Markdown 内容
 4. 刷新浏览器查看
 
-### 更新资讯
-
-```bash
-node scripts/rss/run.mjs
-```
-
 ### 修改主题颜色
 
 编辑 `tailwind.config.js` 中的颜色配置。
-
-### 调整筛选规则
-
-编辑 `scripts/rss/ai/translator.mjs` 中的 `TRANSLATE_PROMPT`。
 
 ## 📖 相关文档
 
 - [Vite 文档](https://vite.dev/)
 - [React 文档](https://react.dev/)
 - [Tailwind CSS 文档](https://tailwindcss.com/)
-- [智谱 AI 文档](https://open.bigmodel.cn/)
 
 ## 📄 License
 
