@@ -19,6 +19,7 @@ export default function PostListItem({ post }) {
   };
 
   const { day, month, year } = parseDate(post.date);
+  const showRawType = post.rawCategory && post.rawCategory !== post.category;
 
   return (
     <Link
@@ -30,8 +31,8 @@ export default function PostListItem({ post }) {
       >
       {/* 顶部/左侧：日期 */}
       <div className="flex-shrink-0 sm:w-20 sm:text-right">
-        <div className="text-2xl sm:text-3xl font-serif font-bold text-slate-700 dark:text-slate-300 leading-none">
-          <span className="sm:hidden">{month} {day}, {year}</span>
+        <div className="text-base sm:text-3xl font-serif sm:font-bold text-slate-700 dark:text-slate-300 leading-tight sm:leading-none">
+          <span className="sm:hidden font-medium">{month} {day}, {year}</span>
           <span className="hidden sm:inline">{day}</span>
         </div>
         <div className="hidden sm:block text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -48,6 +49,11 @@ export default function PostListItem({ post }) {
           {post.category && (
             <span className="inline-block px-2 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-full flex-shrink-0">
               {getCategoryLabel(post.category)}
+            </span>
+          )}
+          {showRawType && (
+            <span className="inline-block px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 rounded-full flex-shrink-0 border border-slate-200 dark:border-slate-700">
+              {post.rawCategory}
             </span>
           )}
         </div>

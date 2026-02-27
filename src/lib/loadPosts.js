@@ -1,5 +1,6 @@
 // src/lib/loadPosts.js
 import frontMatter from 'front-matter';
+import { normalizeToNavCategory } from './categoryMapping';
 
 // 使用 Vite 的 import.meta.glob 批量导入文件
 // { query: '?raw', import: 'default' } 表示以字符串形式直接加载
@@ -32,7 +33,8 @@ function parseFrontmatter(filePath, rawContent) {
         slug,
         title: slug,
         date: 'Unknown',
-        category: 'Uncategorized',
+        rawCategory: 'Uncategorized',
+        category: normalizeToNavCategory('Uncategorized'),
         content: rawContent
       };
     }
@@ -40,6 +42,8 @@ function parseFrontmatter(filePath, rawContent) {
     return {
       slug,
       ...parsed.attributes,
+      rawCategory: parsed.attributes.category || 'Uncategorized',
+      category: normalizeToNavCategory(parsed.attributes.category),
       content: parsed.body
     };
   } catch (e) {

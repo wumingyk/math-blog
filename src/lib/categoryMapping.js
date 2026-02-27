@@ -13,6 +13,36 @@ export const categoryMap = {
 export const fixedCategories = ['Language', 'Engineering', 'Algorithm', 'Physics'];
 
 /**
+ * 原始文章分类归一化到 L.E.A.P. 导航分类
+ * @param {string} category - 原始分类
+ * @returns {'Language'|'Engineering'|'Algorithm'|'Physics'}
+ */
+export const normalizeToNavCategory = (category) => {
+  const value = String(category || '').trim().toLowerCase();
+
+  if (!value) return 'Language';
+
+  if (['language', 'reading', 'essay', '文学', '阅读', '随笔'].includes(value)) {
+    return 'Language';
+  }
+
+  if (['engineering', 'tech', 'technology', '技术', '工程'].includes(value)) {
+    return 'Engineering';
+  }
+
+  if (['algorithm', 'math', 'mathematics', '数学', '算法'].includes(value)) {
+    return 'Algorithm';
+  }
+
+  if (['physics', '物理'].includes(value)) {
+    return 'Physics';
+  }
+
+  // 未知分类做宽松归类，优先放到 Language
+  return 'Language';
+};
+
+/**
  * 将英文分类转换为中文
  * @param {string} category - 英文分类
  * @returns {string} 中文分类
@@ -30,7 +60,6 @@ export const getCategoryLabel = (category) => {
 export const isValidCategory = (category) => {
   return fixedCategories.includes(category);
 };
-
 
 
 

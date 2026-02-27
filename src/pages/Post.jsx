@@ -167,6 +167,11 @@ export default function Post({ post, onBack }) {
                 {getCategoryLabel(post.category)}
               </span>
             )}
+            {post.rawCategory && post.rawCategory !== post.category && (
+              <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full font-medium">
+                {post.rawCategory}
+              </span>
+            )}
             {post.date && (
               <time className="font-sans">
                 {new Date(post.date).toLocaleDateString('en-US', {
