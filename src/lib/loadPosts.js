@@ -3,7 +3,7 @@ import frontMatter from 'front-matter';
 
 // 使用 Vite 的 import.meta.glob 批量导入文件
 // { query: '?raw', import: 'default' } 表示以字符串形式直接加载
-const markdownFiles = import.meta.glob('../posts/*.md', { query: '?raw', import: 'default', eager: true });
+const markdownFiles = import.meta.glob('../posts/**/*.md', { query: '?raw', import: 'default', eager: true });
 
 let _postCache = null;
 
@@ -13,14 +13,19 @@ let _postCache = null;
  * @param {string} rawContent - 原始内容
  * @returns {Object|null} 解析后的文章对象
  */
-function parseFrontmatter(fileName, rawContent) {
+function pathToSlug(filePath) {
+  return filePath
+    .replace('../posts/', '')
+    .replace(/\.md$/, '');
+}
+
+function parseFrontmatter(filePath, rawContent) {
   try {
     // 使用 front-matter 库解析
     const parsed = frontMatter(rawContent);
 
-    // 生成 Slug (移除 .md 后缀)
-    const slug = fileName.replace('.md', '');
-
+    // 生成 Slug（保留子目录路径）
+    const slug = pathToSlug(filePath);
     // 如果没有 frontmatter，返回默认结构
     if (!parsed.attributes || Object.keys(parsed.attributes).length === 0) {
       return {
@@ -38,7 +43,7 @@ function parseFrontmatter(fileName, rawContent) {
       content: parsed.body
     };
   } catch (e) {
-    console.error(`Error parsing ${fileName}:`, e);
+    console.error(`Error parsing ${filePath}:`, e);
     return null;
   }
 }
@@ -66,11 +71,13 @@ export const loadPosts = {
 
     // 遍历 glob 导入的结果
     const posts = Object.keys(markdownFiles).map((path) => {
-      const fileName = path.split('/').pop(); // 从路径 ../posts/abc.md 获取 abc.md
+      if (path.includes('/digest/')) {
+        return null;
+      }
       const rawContent = markdownFiles[path];
 
       // 调用解析器
-      return parseFrontmatter(fileName, rawContent);
+      return parseFrontmatter(path, rawContent);
     }).filter(post => post !== null); // 过滤掉解析失败的
 
     // 按日期降序排序

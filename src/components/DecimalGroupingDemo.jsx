@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import { Plus, RotateCcw, Box, Circle } from 'lucide-react';
 
 /**
@@ -134,7 +134,7 @@ export default function DecimalSystemDemo() {
     }
   };
 
-  const handlePointerUp = (e) => {
+  const handlePointerUp = () => {
     setDragState(null);
   };
 

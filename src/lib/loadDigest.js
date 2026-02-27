@@ -2,6 +2,8 @@
  * 每日资讯加载器
  * 参考 loadPosts.js 的实现模式
  */
+import frontMatter from 'front-matter';
+
 const digestFiles = import.meta.glob('../posts/digest/*.md', {
   query: '?raw',
   import: 'default',
@@ -23,27 +25,18 @@ export const loadDigestPosts = {
     const posts = Object.keys(digestFiles).map((path) => {
       const fileName = path.split('/').pop().replace('.md', '');
       const rawContent = digestFiles[path];
-
-      // 解析 frontmatter
-      const frontmatterMatch = rawContent.match(/^---\n([\s\S]*?)\n---/);
-      let attributes = {};
-      let body = rawContent;
-
-      if (frontmatterMatch) {
-        try {
-          // 手动解析 YAML frontmatter（简化版）
-          const yamlText = frontmatterMatch[1];
-          attributes = parseYAML(yamlText);
-          body = rawContent.replace(frontmatterMatch[0], '');
-        } catch (error) {
-          console.error('Frontmatter 解析失败:', error);
-        }
+      let parsed;
+      try {
+        parsed = frontMatter(rawContent);
+      } catch (error) {
+        console.error('Frontmatter 解析失败:', error);
+        parsed = { attributes: {}, body: rawContent };
       }
 
       return {
         slug: fileName,
-        ...attributes,
-        content: body.trim(),
+        ...(parsed.attributes || {}),
+        content: (parsed.body || '').trim(),
       };
     });
 
@@ -78,50 +71,5 @@ export const loadDigestPosts = {
     _digestCache = null;
   },
 };
-
-/**
- * 简化的 YAML 解析器
- * @param {string} yamlText - YAML 文本
- * @returns {Object} 解析后的对象
- */
-function parseYAML(yamlText) {
-  const result = {};
-
-  const lines = yamlText.split('\n');
-  for (const line of lines) {
-    // 跳过空行和注释
-    if (!line.trim() || line.trim().startsWith('#')) continue;
-
-    // 解析 key: value 格式
-    const match = line.match(/^(\w+):\s*(.*)$/);
-    if (match) {
-      const [, key, value] = match;
-
-      // 处理不同类型的值
-      if (value === 'true') {
-        result[key] = true;
-      } else if (value === 'false') {
-        result[key] = false;
-      } else if (value.startsWith('[') && value.endsWith(']')) {
-        // 数组
-        result[key] = value
-          .slice(1, -1)
-          .split(',')
-          .map((v) => v.trim().replace(/^"|"$/g, ''));
-      } else if (value.startsWith('"') && value.endsWith('"')) {
-        // 带引号的字符串
-        result[key] = value.slice(1, -1);
-      } else if (!isNaN(value)) {
-        // 数字
-        result[key] = Number(value);
-      } else {
-        // 普通字符串
-        result[key] = value;
-      }
-    }
-  }
-
-  return result;
-}
 
 export default loadDigestPosts;

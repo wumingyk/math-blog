@@ -1,12 +1,14 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
-import Home from './pages/Home';
-import PostRoute from './pages/PostRoute';
-import About from './pages/About';
-import Subscribe from './pages/Subscribe';
+import LoadingSkeleton from './components/LoadingSkeleton';
+
+const Home = lazy(() => import('./pages/Home'));
+const PostRoute = lazy(() => import('./pages/PostRoute'));
+const About = lazy(() => import('./pages/About'));
+const Subscribe = lazy(() => import('./pages/Subscribe'));
 
 export default function App() {
   // 深色模式状态管理
@@ -35,13 +37,15 @@ export default function App() {
     <HelmetProvider>
       <div className="min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 selection:bg-emerald-100 dark:selection:bg-emerald-900 transition-colors">
         <Header theme={theme} toggleTheme={toggleTheme} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/post/:slug" element={<PostRoute />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/subscribe" element={<Subscribe />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        <Suspense fallback={<LoadingSkeleton />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/post/:slug" element={<PostRoute />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/subscribe" element={<Subscribe />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </Suspense>
       </div>
     </HelmetProvider>
   );

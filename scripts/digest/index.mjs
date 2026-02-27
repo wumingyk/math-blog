@@ -5,7 +5,7 @@
 import { resolve, join } from 'path';
 import { writeFile, mkdir } from 'fs/promises';
 import { logger } from './utils/logger.mjs';
-import { getTodayString, getTimestamp } from './utils/dateUtils.mjs';
+import { getTodayString } from './utils/dateUtils.mjs';
 import { BilibiliFetcher } from './fetchers/bilibiliFetcher.mjs';
 import { TwitterFetcher } from './fetchers/twitterFetcher.mjs';
 import { WeiboFetcher } from './fetchers/weiboFetcher.mjs';

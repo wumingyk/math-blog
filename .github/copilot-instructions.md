@@ -2,6 +2,11 @@
 
 简短、可执行的提示，帮助 AI 代理快速在本仓库内开展编码工作。
 
+## 先读这个（重要）
+- 在继续修改前，先阅读仓库根目录的 `AI_CHANGELOG.md`。
+- 该文件记录了 2026-02-27 的关键架构调整（懒加载、分包、解析器统一、lint 修复）及原因。
+- 若与本文档存在冲突，以 `package.json` 和 `AI_CHANGELOG.md` 为准。
+
 ## 一句话概览
 - 本仓库是一个基于 React + Vite 的静态博客，Markdown 文章位于 `src/posts`，站点构建前会生成 RSS 与 sitemap。UI 使用 Tailwind + rehype/remark 插件处理数学与高亮。
 

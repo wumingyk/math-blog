@@ -1,5 +1,5 @@
 // src/components/MarkdownRenderer.jsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -12,11 +12,20 @@ import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github-dark.css';
 import { customModules } from './customModules';
 
+function slugifyHeading(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\u4e00-\u9fa5\s-]/g, '')
+    .replace(/\s+/g, '-');
+}
+
 export default function MarkdownRenderer({ content, postTitle }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [images, setImages] = useState([]);
   const containerRef = useRef(null);
+  const headingSlugCounts = new Map();
 
   useEffect(() => {
     const el = containerRef.current;
@@ -45,6 +54,14 @@ export default function MarkdownRenderer({ content, postTitle }) {
     return '';
   };
 
+  const buildHeadingId = (text) => {
+    const baseSlug = slugifyHeading(text);
+    if (!baseSlug) return '';
+    const count = headingSlugCounts.get(baseSlug) || 0;
+    headingSlugCounts.set(baseSlug, count + 1);
+    return count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
+  };
+
   return (
     <>
       <div
@@ -58,16 +75,30 @@ export default function MarkdownRenderer({ content, postTitle }) {
             h1: ({ children, ...props }) => {
               const h1Text = extractText(children).trim();
               if (h1Text && h1Text === postTitle?.trim()) return null;
-              return <h1 className="font-serif text-slate-800 dark:text-slate-200" {...props}>{children}</h1>;
+              const id = buildHeadingId(h1Text);
+              return <h1 id={id || undefined} className="font-serif text-slate-800 dark:text-slate-200 scroll-mt-24" {...props}>{children}</h1>;
             },
-            h2: ({ ...props }) => <h2 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
-            h3: ({ ...props }) => <h3 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
-            h4: ({ ...props }) => <h4 className="font-serif text-slate-800 dark:text-slate-200" {...props} />,
+            h2: ({ children, ...props }) => {
+              const id = buildHeadingId(extractText(children).trim());
+              return <h2 id={id || undefined} className="font-serif text-slate-800 dark:text-slate-200 scroll-mt-24" {...props}>{children}</h2>;
+            },
+            h3: ({ children, ...props }) => {
+              const id = buildHeadingId(extractText(children).trim());
+              return <h3 id={id || undefined} className="font-serif text-slate-800 dark:text-slate-200 scroll-mt-24" {...props}>{children}</h3>;
+            },
+            h4: ({ children, ...props }) => {
+              const id = buildHeadingId(extractText(children).trim());
+              return <h4 id={id || undefined} className="font-serif text-slate-800 dark:text-slate-200 scroll-mt-24" {...props}>{children}</h4>;
+            },
             p: ({ children, ...props }) => {
               const text = extractText(children).trim();
               if (customModules[text]) {
                 const Module = customModules[text];
-                return <Module />;
+                return (
+                  <Suspense fallback={<p className="text-slate-500 dark:text-slate-400">Loading demo...</p>}>
+                    <Module />
+                  </Suspense>
+                );
               }
               return <p className="text-slate-700 dark:text-slate-300 leading-relaxed" {...props}>{children}</p>;
             },
@@ -95,6 +126,8 @@ export default function MarkdownRenderer({ content, postTitle }) {
               <img
                 src={src}
                 alt={alt}
+                loading="lazy"
+                decoding="async"
                 className="rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => handleImageClick(src)}
                 {...props}

@@ -8,6 +8,7 @@ export default function SineSurfaceDemo() {
   useEffect(() => {
     const width = 600;
     const height = 400;
+    const mountElement = mountRef.current;
 
     // Create renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -15,8 +16,8 @@ export default function SineSurfaceDemo() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     // Append canvas
-    if (mountRef.current) {
-      mountRef.current.appendChild(renderer.domElement);
+    if (mountElement) {
+      mountElement.appendChild(renderer.domElement);
     }
 
     // Scene and camera
@@ -79,8 +80,8 @@ export default function SineSurfaceDemo() {
       renderer.dispose();
       material.dispose();
       plane.dispose();
-      if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountElement && renderer.domElement.parentNode === mountElement) {
+        mountElement.removeChild(renderer.domElement);
       }
     };
   }, []);

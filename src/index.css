@@ -14,6 +14,21 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* 移动端阅读优化 */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
+
+/* 代码块横向滚动体验优化（移动端） */
+.prose pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
 /* 文本选择样式 */
 ::selection {
   background-color: rgb(209, 250, 229); /* emerald-100 */

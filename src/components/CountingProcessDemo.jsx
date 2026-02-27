@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const WIDTH = 520;
 const HEIGHT = 320;
@@ -61,8 +61,6 @@ export default function CountingProcessDemo() {
   // 曲线箭头（Bezier）
   const renderArrow = (from, to, idx) => {
     const dx = to.x - from.x;
-    const dy = to.y - from.y;
-
     const cx1 = from.x + dx * 0.4;
     const cy1 = from.y;
     const cx2 = from.x + dx * 0.6;

@@ -39,23 +39,24 @@ export default function Home() {
       <Helmet>
         <title>L.E.A.P. - Exploring the World</title>
         <meta name="description" content="Decoding the world through Language, Engineering, Algorithms, and Physics." />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Helmet>
-      <main className="pt-24 pb-20">
-        <div className="max-w-4xl mx-auto px-6">
+      <main className="pt-20 sm:pt-24 pb-16 sm:pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           {/* Hero 区域 */}
-          <section className="mb-16">
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-slate-800 dark:text-slate-200 leading-tight mb-8">
+          <section className="mb-10 sm:mb-16">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-slate-800 dark:text-slate-200 leading-tight mb-6 sm:mb-8">
               Exploring the World
             </h1>
             
             {/* 分类筛选 */}
             {!loading && !error && posts.length > 0 && (
-              <div className="flex flex-wrap items-center gap-3 mb-8">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
                 {fixedCategories.map(category => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
+                    className={`px-3 sm:px-4 py-2 min-h-11 text-sm font-medium rounded-full transition-all ${
                       selectedCategory === category
                         ? 'bg-emerald-600 text-white shadow-md'
                         : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600'

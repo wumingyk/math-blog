@@ -8,5 +8,29 @@ export default defineConfig({
     react(),
     markdown()
   ],
-  assetsInclude: ['**/*.md']
+  assetsInclude: ['**/*.md'],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('react-markdown') || id.includes('remark-') || id.includes('rehype-') || id.includes('unist-')) {
+            return 'markdown-vendor';
+          }
+          if (id.includes('katex') || id.includes('highlight.js')) {
+            return 'render-vendor';
+          }
+          if (id.includes('yet-another-react-lightbox')) {
+            return 'lightbox-vendor';
+          }
+          if (id.includes('three')) {
+            return 'three-vendor';
+          }
+          if (id.includes('d3')) {
+            return 'd3-vendor';
+          }
+        },
+      },
+    },
+  },
 })
