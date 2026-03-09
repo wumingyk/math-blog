@@ -13,26 +13,20 @@
 ## 主要位置（先看这些文件）
 - 运行与脚本: [package.json](package.json)
 - 文章加载与前置处理: [src/lib/loadPosts.js](src/lib/loadPosts.js)
-- RSS（浏览器版）: [src/lib/generateRSS.js](src/lib/generateRSS.js)
-- RSS（构建/CI 脚本）: [scripts/generate-rss.mjs](scripts/generate-rss.mjs)
 - sitemap 脚本: [scripts/generate-sitemap.mjs](scripts/generate-sitemap.mjs)
 - Markdown 渲染器（嵌入规则、音频、图片灯箱）: [src/components/MarkdownRenderer.jsx](src/components/MarkdownRenderer.jsx)
 - 自定义嵌入模块自动映射: [src/components/customModules.js](src/components/customModules.js)
 
 ## 快速命令（工程特有）
 - 本地开发: `npm run dev` （Vite dev server）
-- 生成 RSS（单独）: `npm run generate-rss` （写入 `public/rss.xml`）
 - 生成 sitemap: `npm run sitemap`
-- 构建（含 RSS 生成）: `npm run build` （内部执行 `npm run generate-rss && vite build`）
+- 构建: `npm run build`
 - 代码检查: `npm run lint`
-
-注意：`npm run build` 会先运行 `scripts/generate-rss.mjs`，该脚本在 Node 环境中读取 `src/posts`，并依赖 `CONFIG.site_url`（请在脚本中设置为你的站点域名）。
 
 ## 文章与 frontmatter 约定
 - 文章目录：`src/posts/*.md`。
 - 节点端脚本与 Vite 端解析略有不同：
-  - 构建脚本使用 `front-matter`（scripts/generate-rss.mjs）。
-  - 浏览器运行时在 `src/lib/loadPosts.js` 使用 `import.meta.glob('../posts/*.md', { query: '?raw', eager: true })` 获取原始字符串并解析。
+  - 浏览器运行时在 `src/lib/loadPosts.js` 使用 `import.meta.glob('../posts/**/*.md', { query: '?raw', eager: true })` 获取原始字符串并解析。
 - 草稿标记：`published: false` 会被过滤（详见 `loadPosts.getAll` 与脚本中的过滤逻辑）。
 
 ## Markdown 渲染与嵌入约定（重要）
@@ -43,8 +37,7 @@
 - 标题处理：`h1` 若文本与 `postTitle` 相同将被隐藏（避免重复渲染）。
 
 ## 常见陷阱与注意事项
-- 在浏览器运行代码中不要直接重用 `window.location.origin` 的值来在 Node 脚本中生成绝对 URL。项目中存在两套 RSS 生成实现：客户端（`src/lib/generateRSS.js`）与构建脚本（`scripts/generate-rss.mjs`）。CI/构建应使用 `scripts/generate-rss.mjs` 并将 `CONFIG.site_url` 设置为真实域名。
-- `src/lib/parseFrontmatter.js` 包含一个轻量的 YAML 解析实现，但大多数构建脚本使用 `front-matter` 库；修改解析行为时注意两端兼容性。
+- 文章解析统一使用 `front-matter`（见 `src/lib/loadPosts.js` 和 `src/lib/loadDigest.js`）。
 - `loadPosts` 内有简单内存缓存 `_postCache`，开发时若文章更改需重启 dev server 或清空缓存逻辑以看见更新。
 
 ## 代码风格与测试线索

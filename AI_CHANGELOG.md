@@ -14,6 +14,56 @@ This update focused on four areas:
 
 ## What Changed And Why
 
+### 0.2 Safe dead-code cleanup (new)
+
+- Files removed (unreferenced in app/runtime):
+  - `src/App.css`
+  - `src/assets/react.svg`
+  - `src/hello-world.md`
+  - `src/components/SocialLink.jsx`
+  - `src/components/feed/FeedCard.jsx`
+  - `src/lib/loadFeed.js`
+  - `src/lib/generateRSS.js`
+  - `src/lib/parseFrontmatter.js`
+- Directories removed (empty):
+  - `src/components/feed/`
+  - `src/components/digest/`
+- Docs updated:
+  - `.github/copilot-instructions.md` adjusted to remove stale references.
+- Why:
+  - These files were not imported by current routes/components/tooling.
+  - Cleanup reduces maintenance noise without affecting primary build/runtime paths.
+
+### 0. Navigation category and post category alignment fix (new)
+
+- Files:
+  - `src/lib/categoryMapping.js`
+  - `src/lib/loadPosts.js`
+  - `src/components/PostListItem.jsx`
+  - `src/pages/Post.jsx`
+- Change:
+  - Added `normalizeToNavCategory(...)` to map raw categories into navigation buckets:
+    - `Reading/Essay/Language` -> `Language`
+    - `Tech/Engineering` -> `Engineering`
+    - `Math/Algorithm` -> `Algorithm`
+    - `Physics` -> `Physics`
+  - `loadPosts` now stores both:
+    - `rawCategory` (original frontmatter category)
+    - `category` (normalized nav category used for filtering)
+  - List/detail UI shows normalized category, and also shows `rawCategory` badge when different.
+- Why:
+  - Existing posts used mixed taxonomies (`Math`, `Tech`, `Essay`, `Reading`) while nav filters only used L.E.A.P. categories.
+  - This caused filter mismatch and missing results under navigation tabs.
+
+### 0.1 Mobile list date size adjustment (new)
+
+- File: `src/components/PostListItem.jsx`
+- Change:
+  - Reduced mobile date text size from large display style to a smaller readable style.
+  - Desktop date style remains unchanged.
+- Why:
+  - On mobile list pages, date text looked visually too dominant compared with title/summary.
+
 ### 1. `loadPosts` now supports nested markdown paths
 
 - File: `src/lib/loadPosts.js`
@@ -112,4 +162,3 @@ Compared to pre-optimization state:
 4. If running checks via automation, do not execute `lint` and `build` in parallel.
    - Vite can create/remove temporary timestamp files that may cause transient `ENOENT` in ESLint when both run simultaneously.
 5. `PROJECT_OVERVIEW.md` and older agent docs may contain stale script references. Prefer current `package.json` + this file.
-
