@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手机号清洗工具</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #e2e8f0;
+        --brand: #0ea5e9;
+        --brand-hover: #0284c7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        color: var(--text);
+        background: linear-gradient(165deg, #f8fafc 0%, #eef6ff 100%);
+      }
+
+      .wrap {
+        max-width: 980px;
+        margin: 24px auto;
+        padding: 0 16px 28px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 24px;
+      }
+
+      .desc {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      @media (min-width: 900px) {
+        .row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      label {
+        display: block;
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 220px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: vertical;
+        outline: none;
+      }
+
+      textarea:focus {
+        border-color: #7dd3fc;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        cursor: pointer;
+        background: var(--brand);
+        color: #fff;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: var(--brand-hover);
+      }
+
+      button.secondary {
+        background: #334155;
+      }
+
+      button.secondary:hover {
+        background: #1e293b;
+      }
+
+      .meta {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .tips {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      code {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 1px 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>手机号清洗工具</h1>
+        <p class="desc">支持从换行、顿号、引号、逗号、空格等混杂文本中提取手机号，并生成 SQL 查询格式。</p>
+
+        <div class="row">
+          <div>
+            <label for="rawInput">原始文本</label>
+            <textarea id="rawInput" placeholder="把原始文本粘贴到这里..."></textarea>
+          </div>
+          <div>
+            <label for="cleanOutput">第一步：提取出的 11 位手机号（每行一个）</label>
+            <textarea id="cleanOutput" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;">
+          <div style="grid-column: 1 / -1;">
+            <label for="sqlOutput">第二步：SQL 格式（'手机号','手机号'）</label>
+            <textarea id="sqlOutput" readonly style="min-height: 120px;"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="extractBtn">提取并生成</button>
+          <button id="copyCleanBtn" class="secondary">复制手机号列表</button>
+          <button id="copySqlBtn" class="secondary">复制 SQL 列表</button>
+          <button id="clearBtn" class="secondary">清空</button>
+        </div>
+
+        <div class="meta" id="metaText">共提取 0 个手机号（自动去重）。</div>
+
+        <div class="tips">
+          用法示例：把结果直接拼到 SQL 中，如
+          <code>where mobile in ('13800138000','13900139000')</code>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const rawInput = document.getElementById('rawInput');
+      const cleanOutput = document.getElementById('cleanOutput');
+      const sqlOutput = document.getElementById('sqlOutput');
+      const metaText = document.getElementById('metaText');
+      const extractBtn = document.getElementById('extractBtn');
+      const copyCleanBtn = document.getElementById('copyCleanBtn');
+      const copySqlBtn = document.getElementById('copySqlBtn');
+      const clearBtn = document.getElementById('clearBtn');
+
+      function normalizeDigits(text) {
+        return text.replace(/[\uFF10-\uFF19]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
+      }
+
+      function extractPhones(text) {
+        const normalized = normalizeDigits(text || '');
+        const pattern = /1[3-9](?:\D*\d){9}/g;
+        const matches = normalized.match(pattern) || [];
+
+        const orderedUnique = [];
+        const seen = new Set();
+
+        for (const item of matches) {
+          const digits = item.replace(/\D/g, '');
+          if (/^1[3-9]\d{9}$/.test(digits) && !seen.has(digits)) {
+            seen.add(digits);
+            orderedUnique.push(digits);
+          }
+        }
+
+        return orderedUnique;
+      }
+
+      function render() {
+        const phones = extractPhones(rawInput.value);
+        cleanOutput.value = phones.join('\n');
+        sqlOutput.value = phones.map((n) => `'${n}'`).join(',');
+        metaText.textContent = `共提取 ${phones.length} 个手机号（自动去重）。`;
+      }
+
+      async function copyText(content) {
+        if (!content) return;
+        try {
+          await navigator.clipboard.writeText(content);
+        } catch (_) {
+          // Fallback for restricted clipboard environment
+          const el = document.createElement('textarea');
+          el.value = content;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand('copy');
+          document.body.removeChild(el);
+        }
+      }
+
+      extractBtn.addEventListener('click', render);
+      copyCleanBtn.addEventListener('click', () => copyText(cleanOutput.value));
+      copySqlBtn.addEventListener('click', () => copyText(sqlOutput.value));
+      clearBtn.addEventListener('click', () => {
+        rawInput.value = '';
+        cleanOutput.value = '';
+        sqlOutput.value = '';
+        metaText.textContent = '共提取 0 个手机号（自动去重）。';
+      });
+
+      rawInput.addEventListener('input', render);
+    </script>
+  </body>
+</html>
