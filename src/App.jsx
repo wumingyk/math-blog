@@ -40,7 +40,7 @@ export default function App() {
         <Suspense fallback={<LoadingSkeleton />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/post/:slug" element={<PostRoute />} />
+            <Route path="/post/*" element={<PostRoute />} />
             <Route path="/about" element={<About />} />
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="*" element={<Home />} />

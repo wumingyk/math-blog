@@ -6,7 +6,8 @@ import Post from './Post';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
 export default function PostRoute() {
-  const { slug } = useParams();
+  const params = useParams();
+  const slug = params['*'];
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,4 +59,3 @@ export default function PostRoute() {
 
   return <Post post={post} onBack={handleBack} />;
 }
-
